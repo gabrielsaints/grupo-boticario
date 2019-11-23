@@ -1,0 +1,18 @@
+{
+  "name": "grupo-boticario",
+  "author": "Gabriel Santos <gabr1el_santos@hotmail.com>",
+  "scripts": {
+    "build": "node_modules/.bin/tsc",
+    "dev": "node_modules/.bin/nodemon src/app.ts",
+    "test": "node_modules/.bin/jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.1",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.2",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  }
+}

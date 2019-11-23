@@ -1,0 +1,8 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
+  },
+  "rulesDirectory": []
+}
