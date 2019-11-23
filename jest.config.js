@@ -1,5 +1,6 @@
 module.exports = {
   verbose: true,
+  coverageDirectory: './src/__tests__/coverage',
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   transform: {
