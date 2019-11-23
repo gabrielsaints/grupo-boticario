@@ -1,13 +1,9 @@
 version: "3"
 services:
-  db:
-    image: "postgres"
-    container_name: "postgres-db"
-    environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=grupo_boticario
+  mongo:
+    image: mongo
+    container_name: mongodb
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - ./__data__:/var/lib/postgresql/data
+      - ./__data__:/data/db

@@ -2,12 +2,9 @@
   "name": "grupo-boticario",
   "author": "Gabriel Santos <gabr1el_santos@hotmail.com>",
   "scripts": {
-    "_pretest": "yarn knex:migrate:latest --env=test",
-    "_posttest": "yarn knex:migrate:rollback --env=test --all",
-    "start": "node_modules/.bin/nodemon dist/server.js",
+    "start": "node_modules/.bin/nodemon build/server.js",
     "jest": "node_modules/.bin/jest",
     "build": "node_modules/.bin/tsc",
-    "knex": "node_modules/.bin/knex",
     "concurrently": "node_modules/.bin/concurrently",
     "tslint": "node_modules/.bin/tslint",
     "test": "yarn jest --watch --runInBand",
@@ -15,13 +12,6 @@
     "test:coverage": "yarn jest --coverage --runInBand",
     "watch": "yarn build --watch",
     "dev": "yarn concurrently -n tsc,js -i \"yarn watch\" \"yarn start\"",
-    "seed:make": "yarn knex -x ts seed:make",
-    "seed:run": "yarn knex seed:run",
-    "migrate:make": "yarn knex -x ts migrate:make",
-    "migrate:up": "yarn knex migrate:up",
-    "migrate:down": "yarn knex migrate:down",
-    "migrate:latest": "yarn knex migrate:latest",
-    "migrate:rollback": "yarn knex migrate:rollback",
     "lint": "yarn tslint 'src/**/*.ts'"
   },
   "devDependencies": {
@@ -32,8 +22,10 @@
     "@types/hapi__joi": "^16.0.3",
     "@types/jest": "^24.0.23",
     "@types/moment": "^2.13.0",
+    "@types/mongoose": "^5.5.32",
     "@types/supertest": "^2.0.8",
     "chance": "^1.1.3",
+    "concurrently": "^5.0.0",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
     "supertest": "^4.0.2",
@@ -50,6 +42,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12"
   }
 }
