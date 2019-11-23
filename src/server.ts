@@ -1,3 +1,7 @@
 import app from './app';
+import Database from './helpers/database';
 
-app.listen(process.env.PORT);
+(async () => {
+  await Database.connect();
+  app.listen(process.env.PORT);
+})();

@@ -3,7 +3,6 @@ import Server from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import Database from './helpers/database';
 import ErrorMiddleware from './middlewares/error';
 
 import './config/env';
@@ -20,16 +19,11 @@ class App implements IApp {
 
     this.middlewares();
     this.routes();
-    this.helpers();
   }
 
   private middlewares(): void {
     this.server.use(cors());
     this.server.use(bodyParser.json());
-  }
-
-  private async helpers(): Promise<any> {
-    await Database.connect();
     this.server.use(ErrorMiddleware.notFoundHandler());
     this.server.use(ErrorMiddleware.exceptionHandler());
   }
