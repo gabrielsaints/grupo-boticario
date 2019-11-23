@@ -3,7 +3,7 @@ import { Document, model, Model, Schema, Types } from 'mongoose';
 import { IUserDocument } from './user';
 
 interface ISaleDocument extends Document {
-  value: number;
+  price: number;
   status: string;
   user: IUserDocument;
 }
@@ -12,7 +12,7 @@ interface ISaleModel extends Model<ISaleDocument> {}
 
 const SALE_SCHEMA = new Schema(
   {
-    value: {
+    price: {
       type: Number,
       required: true,
     },
@@ -31,13 +31,11 @@ const SALE_SCHEMA = new Schema(
   },
 );
 
-// Getter
-SALE_SCHEMA.path('price').get((num): string => {
+SALE_SCHEMA.path('price').get((num: number): string => {
   return (num / 100).toFixed(2);
 });
 
-// Setter
-SALE_SCHEMA.path('price').set((num): number => {
+SALE_SCHEMA.path('price').set((num: number): number => {
   return num * 100;
 });
 
