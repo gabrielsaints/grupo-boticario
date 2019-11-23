@@ -1,8 +1,18 @@
 {
   "defaultSeverity": "error",
   "extends": ["tslint:recommended"],
+  "jsRules": {},
   "rules": {
-    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "object-literal-sort-keys": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "ordered-imports": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
   },
   "rulesDirectory": []
 }

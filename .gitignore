@@ -2,3 +2,7 @@ node_modules
 dist
 yarn.lock
 package-lock.json
+.env
+__data__
+build
+coverage

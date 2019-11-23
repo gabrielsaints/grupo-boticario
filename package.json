@@ -2,18 +2,47 @@
   "name": "grupo-boticario",
   "author": "Gabriel Santos <gabr1el_santos@hotmail.com>",
   "scripts": {
+    "start": "node_modules/.bin/nodemon build/server.js",
+    "jest": "node_modules/.bin/jest",
     "build": "node_modules/.bin/tsc",
-    "dev": "node_modules/.bin/nodemon src/app.ts",
-    "test": "node_modules/.bin/jest"
+    "concurrently": "node_modules/.bin/concurrently",
+    "tslint": "node_modules/.bin/tslint",
+    "test": "yarn jest --watch --runInBand",
+    "test:all": "yarn jest --watchAll --runInBand",
+    "test:coverage": "yarn jest --coverage --runInBand",
+    "watch": "yarn build --watch",
+    "dev": "yarn concurrently -n tsc,js -i \"yarn watch\" \"yarn start\"",
+    "lint": "yarn tslint 'src/**/*.ts'"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/chance": "^1.0.7",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/hapi__joi": "^16.0.3",
     "@types/jest": "^24.0.23",
+    "@types/moment": "^2.13.0",
+    "@types/mongoose": "^5.5.32",
+    "@types/supertest": "^2.0.8",
+    "chance": "^1.1.3",
+    "concurrently": "^5.0.0",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
+    "supertest": "^4.0.2",
     "ts-jest": "^24.2.0",
     "ts-node": "^8.5.2",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "dependencies": {
+    "@hapi/joi": "^16.1.7",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12"
+  }
 }
