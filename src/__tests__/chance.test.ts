@@ -1,4 +1,4 @@
-import chance from '../utils/chance';
+import chance from './utils/chance';
 
 describe('Chance', () => {
   it('`chance` should return an int valid number', () => {

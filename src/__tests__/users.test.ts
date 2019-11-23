@@ -29,6 +29,13 @@ describe('Users', () => {
     expect(await User.findOne({ _id: user.id })).toBeInstanceOf(User);
   });
 
+  it('`users` should be able to return an user', async () => {
+    expect.assertions(1);
+    const found = await User.findOne({ _id: user.id });
+
+    expect(found).toBeInstanceOf(User);
+  });
+
   it('`users` should be able to update user', async () => {
     expect.assertions(2);
 
