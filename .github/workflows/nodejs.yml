@@ -17,16 +17,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: install mongo
+    - name: Run `docker-compose up -d` to create MongoDB Container
       run: |
         docker-compose up -d
-    - name: npm install
+    - name: Run `npm install` to install depend
       run: |
         npm i
-    - name: npm build
+    - name: Run `npm run lint` to run linter in code
       run: |
-        npm run build
-    - name: npm run jest
+        npm run lint
+    - name: Start application tests with `npm run jest`
       run: |
         npm run jest
       env:
