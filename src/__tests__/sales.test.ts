@@ -59,7 +59,7 @@ describe('Sales', () => {
     await sale.save();
 
     expect(sale.price === oldPrice).toBe(false);
-    expect(sale.price).toBe(newPrice.toString());
+    expect(sale.price).toBe(newPrice.toFixed(2));
   });
 
   it('`sale` should remove an sale', async () => {
