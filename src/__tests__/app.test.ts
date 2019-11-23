@@ -22,19 +22,8 @@ describe('Application', () => {
   });
 
   describe('Database', () => {
-    let oldEnv: string | undefined;
-    beforeEach(() => {
-      oldEnv = process.env.MONGO_URI;
-      delete process.env.MONGO_URI;
-    });
-
-    afterEach(() => {
-      process.env.MONGO_URI = oldEnv;
-    });
-
-    test('`database` shound connect and disconnect to mongodb without errors', async () => {
+    test('`database` shouLd connect and disconnect to mongodb without errors', async () => {
       expect.assertions(2);
-      process.env.MONGO_URI = oldEnv;
       const response = await Database.connect();
       expect(response).toBe(true);
       await Database.disconnect();
@@ -44,7 +33,7 @@ describe('Application', () => {
     test("`database` should return error if doens't exists any MONGO_URI environment variable", async () => {
       expect.assertions(2);
       try {
-        await Database.connect();
+        await Database.connect(null);
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
         expect(e.message).toContain('MONGO_URI');

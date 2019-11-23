@@ -19,5 +19,6 @@
   },
   "exclude": ["node_modules", "src/*.test.ts", "src/__tests__/*"],
   "include": ["src/*"],
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "files": ["src/types.d.ts"]
 }

@@ -6,5 +6,6 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  setupFiles: ['dotenv/config'],
   testRegex: ['(/__tests__/.*(\\.test))\\.[t]sx?$'],
 };
