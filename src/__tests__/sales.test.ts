@@ -1,6 +1,6 @@
 import Normalize from './utils/normalize';
 import User, { IUserDocument } from '../models/user';
-import Sale, { ISaleDocument } from '../models/sale';
+import Sale, { ISaleDocument, isSale } from '../models/sale';
 
 import chance from './utils/chance';
 
@@ -41,11 +41,12 @@ describe('Sales', () => {
   });
 
   it('`sales` should return an sale', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
     const found = await Sale.findOne({ _id: sale.id });
 
     expect(found).toBeInstanceOf(Sale);
+    expect(isSale(found)).toBe(true);
   });
 
   it('`sale` should update an sale', async () => {

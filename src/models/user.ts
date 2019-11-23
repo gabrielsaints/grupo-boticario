@@ -42,7 +42,14 @@ USER_SCHEMA.methods.comparePassword = async function(password: string) {
 USER_SCHEMA.statics.encryptPassword = EncryptionHelper.encryptPassword;
 
 const isUser = (user: IUserModel | any): user is IUserModel => {
-  return !!(user && user.email && user.password && user.name && user.document);
+  return !!(
+    user &&
+    user.email &&
+    user.password &&
+    user.name &&
+    user.document &&
+    user._id
+  );
 };
 
 export { IUserDocument, IUserModel, isUser };
