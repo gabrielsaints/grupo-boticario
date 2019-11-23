@@ -39,8 +39,8 @@ jobs:
     - name: npm build
       run: |
         npm run build
-    - name: npm run test:all
+    - name: npm run jest
       run: |
-        npm run test:all
+        npm run jest
       env:
         MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
