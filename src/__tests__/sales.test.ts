@@ -42,8 +42,8 @@ describe('Sales', () => {
     expect(await Sale.findOne({ _id: sale.id })).toBeInstanceOf(Sale);
   });
 
-  it('`sales` should return an sale', async () => {
-    expect.assertions(3);
+  it('`sales` should return an valid sale', async () => {
+    expect.assertions(5);
 
     const found = await Sale.findOne({ _id: sale.id });
 
@@ -56,6 +56,11 @@ describe('Sales', () => {
     expect(found).toBeInstanceOf(Sale);
     expect(isSale(found)).toBe(true);
     expect(isUser(userFound)).toBe(true);
+    expect(typeof found.cashback).toMatch('string');
+
+    const cashback: string = found.cashback.toString();
+
+    expect(typeof parseFloat(cashback)).toMatch('number');
   });
 
   it('`sale` should update an sale', async () => {

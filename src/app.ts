@@ -3,7 +3,9 @@ import Server from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import ErrorMiddleware from './middlewares/error';
+import errors from './middlewares/error';
+
+import UsersRouter from './routes/users';
 
 import './config/env';
 
@@ -19,17 +21,21 @@ class App implements IApp {
 
     this.middlewares();
     this.routes();
+    this.listeners();
   }
 
   private middlewares(): void {
     this.server.use(cors());
     this.server.use(bodyParser.json());
-    this.server.use(ErrorMiddleware.notFoundHandler());
-    this.server.use(ErrorMiddleware.exceptionHandler());
   }
 
   private routes(): void {
-    // this.server.use(routes);
+    this.server.use(UsersRouter);
+  }
+
+  private listeners(): void {
+    this.server.use(errors.notFound);
+    this.server.use(errors.exception);
   }
 }
 
