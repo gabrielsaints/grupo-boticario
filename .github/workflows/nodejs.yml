@@ -1,4 +1,4 @@
-name: Node CI
+name: Grupo Boticario - Application tests
 
 on: [push]
 
@@ -17,10 +17,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: mongo-install, npm install, build, and test
       run: |
+        sudo docker run --name mongo -d -p 27017:27017 mongo
         npm i
         npm run build --if-present
         npm run test:all
       env:
         CI: true
+        MONGO_URI: mongodb://127.0.0.1:27017/grupo_boticario
+        PORT: 3000
