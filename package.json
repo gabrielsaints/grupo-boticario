@@ -7,6 +7,8 @@
     "test": "node_modules/.bin/jest"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
     "@types/jest": "^24.0.23",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
@@ -15,5 +17,11 @@
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
 }
