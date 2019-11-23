@@ -1,4 +1,4 @@
-import User, { IUserDocument } from './../models/user';
+import User, { IUserDocument, isUser } from './../models/user';
 
 import chance from './utils/chance';
 
@@ -30,10 +30,11 @@ describe('Users', () => {
   });
 
   it('`users` should be able to return an user', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
     const found = await User.findOne({ _id: user.id });
 
     expect(found).toBeInstanceOf(User);
+    expect(isUser(found)).toBe(true);
   });
 
   it('`users` should be able to update user', async () => {

@@ -40,7 +40,7 @@ SALE_SCHEMA.path('price').set((num: number): number => {
 });
 
 const isSale = (sale: ISaleModel | any): sale is ISaleModel => {
-  return !!(sale && sale.value && sale.status);
+  return !!(sale && sale.price && sale.status && sale._id && sale.user);
 };
 
 export { ISaleDocument, ISaleModel, isSale };
