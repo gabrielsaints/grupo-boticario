@@ -1,15 +1,17 @@
 import mongoose from 'mongoose';
 
 abstract class Database {
-  public static async connect() {
+  public static async connect(
+    uri: string | null | undefined = process.env.MONGO_URI,
+  ) {
     try {
-      if (!Database.getUri()) {
+      if (!Database.getUri(uri)) {
         throw new Error('env variable `MONGO_URI` cannot be empty or null');
       }
 
-      const uri: string = Database.getUri() as string;
+      const uriFormated: string = Database.getUri(uri) as string;
 
-      await mongoose.connect(uri, {
+      await mongoose.connect(uriFormated, {
         useCreateIndex: true,
         useFindAndModify: false,
         useNewUrlParser: true,
@@ -26,9 +28,9 @@ abstract class Database {
     await mongoose.disconnect();
   }
 
-  private static getUri(): string | undefined {
-    let uri = process.env.MONGO_URI;
-
+  private static getUri(
+    uri: string | null | undefined,
+  ): string | undefined | null {
     if (!uri) {
       return uri;
     }
