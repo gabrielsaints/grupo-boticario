@@ -20,7 +20,11 @@ interface IUserDocument extends Document {
   lastToken: string;
   lastLogin: Date;
   comparePassword: (password: string) => Promise<boolean>;
-  generateToken: (secret: string, expiresAt?: string) => Promise<string>;
+  generateToken: (
+    body: object,
+    secret: string,
+    expiresAt?: string,
+  ) => Promise<string>;
   serialize: () => IUserSerialized;
 }
 
@@ -82,10 +86,15 @@ USER_SCHEMA.methods.serialize = function(password: string) {
 };
 
 USER_SCHEMA.methods.generateToken = async function(
+  body: object,
   secret: string,
   expiresIn?: string,
 ) {
-  return EncryptionHelper.generateToken(this.serialize(), secret, expiresIn);
+  return EncryptionHelper.generateToken(
+    { ...body, user: this.serialize() },
+    secret,
+    expiresIn,
+  );
 };
 
 USER_SCHEMA.statics.encryptPassword = EncryptionHelper.encryptPassword;
@@ -93,14 +102,7 @@ USER_SCHEMA.statics.encryptPassword = EncryptionHelper.encryptPassword;
 const isUser = (
   user: IUserModel | IUserSerialized | any,
 ): user is IUserModel => {
-  return !!(
-    user &&
-    user.email &&
-    user.password &&
-    user.name &&
-    user.document &&
-    user._id
-  );
+  return !!(user && user.email && user.name && user.document && user._id);
 };
 
 export { IUserDocument, IUserModel, isUser, IUserSerialized };

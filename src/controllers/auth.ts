@@ -25,7 +25,7 @@ const signIn: RequestHandler = async (req, res, next) => {
       throw new RequestError(401, 'Password invalid');
     }
 
-    const token = await user.generateToken(process.env.JWT_SECRET!);
+    const token = await user.generateToken({}, process.env.JWT_SECRET!);
 
     user.lastToken = token;
     user.lastLogin = new Date();
