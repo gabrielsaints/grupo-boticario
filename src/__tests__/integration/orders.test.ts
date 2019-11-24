@@ -75,6 +75,19 @@ describe('API Orders', () => {
     token = null;
   });
 
+  test('`GET` /orders should return `200` with array of orders', async () => {
+    expect.assertions(2);
+
+    const response = await request()
+      .get('/orders')
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body.orders).toBeDefined();
+  });
+
   test('`POST` /orders should return `201` and create an order', async () => {
     expect.assertions(4);
 

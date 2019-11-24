@@ -5,6 +5,22 @@ import RequestError from '../helpers/request-error';
 import Validate from '../helpers/validate';
 import Order, { IOrderSerialized, IOrderDocument } from '../models/order';
 
+const all: RequestHandler = async (req, res, next) => {
+  try {
+    const orders: IOrderDocument[] = await Order.find({});
+
+    res.status(200).json({
+      orders: await Promise.all(
+        orders.map(
+          async (order): Promise<IOrderSerialized> => order.serialize(),
+        ),
+      ),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const store: RequestHandler = async (req, res, next) => {
   try {
     let status: string = 'EM VALIDAÇÃO';
@@ -116,4 +132,4 @@ const drop: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { store, update, drop };
+export { store, update, drop, all };
