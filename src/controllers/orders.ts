@@ -7,10 +7,10 @@ import Order, { IOrderSerialized, IOrderDocument } from '../models/order';
 
 const store: RequestHandler = async (req, res, next) => {
   try {
-    let status: string = 'Em validação';
+    let status: string = 'EM VALIDAÇÃO';
 
     if (req.body.document === '15350946056') {
-      status = 'Aprovado';
+      status = 'APROVADO';
     }
 
     const order: IOrderDocument = new Order({
@@ -33,7 +33,7 @@ const store: RequestHandler = async (req, res, next) => {
 
 const update: RequestHandler = async (req, res, next) => {
   try {
-    const mustBe: string = 'Em validação';
+    const mustBe: string = 'EM VALIDAÇÃO';
     const updated: object[] = [];
     let old: any;
 
@@ -94,5 +94,26 @@ const update: RequestHandler = async (req, res, next) => {
     next(err);
   }
 };
+const drop: RequestHandler = async (req, res, next) => {
+  try {
+    const mustBe: string = 'EM VALIDAÇÃO';
 
-export { store, update };
+    const order: IOrderDocument | null = await Order.findById(req.params.id);
+
+    if (!order) {
+      throw new RequestError(404, 'Not found');
+    }
+
+    if (!order.status.match(mustBe)) {
+      throw new RequestError(405, "You aren't allowed to edit this field");
+    }
+
+    await order.remove();
+
+    res.status(204).send('ok');
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { store, update, drop };

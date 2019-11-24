@@ -8,6 +8,7 @@ interface IOrderSerialized {
   _id: string;
   price: number;
   cashback: number;
+  percentageCashback: number;
   document: string;
   status: string;
   date: Date;
@@ -20,6 +21,7 @@ interface IOrderDocument extends Document {
   price: number;
   date: Date;
   cashback: number;
+  percentageCashback: number;
   document: string;
   status: string;
   user: IUserDocument;
@@ -34,6 +36,10 @@ const ORDER_SCHEMA = new Schema(
       type: Number,
       required: false,
     },
+    percentageCashback: {
+      type: Number,
+      required: false,
+    },
     price: {
       type: Number,
       required: true,
@@ -41,7 +47,7 @@ const ORDER_SCHEMA = new Schema(
     status: {
       type: String,
       required: true,
-      default: 'Em validação',
+      default: 'EM VALIDAÇÃO',
     },
     document: {
       type: String,
@@ -65,6 +71,7 @@ const ORDER_SCHEMA = new Schema(
 
 ORDER_SCHEMA.pre<IOrderDocument>('save', function(next) {
   this.cashback = CashbackHelper.calculate(this.price);
+  this.percentageCashback = CashbackHelper.percentage(this.price) * 100;
   next();
 });
 
@@ -77,6 +84,7 @@ ORDER_SCHEMA.methods.serialize = async function() {
     _id: this._id,
     price: this.price,
     cashback: this.cashback,
+    percentageCashback: this.percentageCashback,
     document: this.document,
     status: this.status,
     date: this.date,

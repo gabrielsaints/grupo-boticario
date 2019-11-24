@@ -15,7 +15,7 @@ import Order, {
 const DEFAULT_DOCUMENT = '53792389045';
 const SPECIAL_DOCUMENT = '15350946056';
 
-describe('API Users', () => {
+describe('API Orders', () => {
   let user: IUserDocument;
   let token: string | null;
   let orderDefault: IOrderDocument;
@@ -37,7 +37,7 @@ describe('API Users', () => {
     orderDefault = new Order({
       document: DEFAULT_DOCUMENT,
       price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
-      status: 'Em validação',
+      status: 'EM VALIDAÇÃO',
       user,
     });
 
@@ -46,7 +46,7 @@ describe('API Users', () => {
     orderSpecial = new Order({
       document: DEFAULT_DOCUMENT,
       price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
-      status: 'Aprovado',
+      status: 'APROVADO',
       user,
     });
 
@@ -121,7 +121,7 @@ describe('API Users', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.order).toBeDefined();
-    expect(response.body.order.status).toMatch('Em validação');
+    expect(response.body.order.status).toMatch('EM VALIDAÇÃO');
 
     const orderRequest: IOrderSerialized = response.body.order;
 
@@ -153,7 +153,7 @@ describe('API Users', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.order).toBeDefined();
-    expect(response.body.order.status).toMatch('Aprovado');
+    expect(response.body.order.status).toMatch('APROVADO');
 
     const orderRequest: IOrderSerialized = response.body.order;
 
@@ -281,5 +281,61 @@ describe('API Users', () => {
     expect(response.status).toBe(422);
     expect(response.body.order).not.toBeDefined();
     expect(response.body.updated).not.toBeDefined();
+  });
+
+  test('`PUT` /orders should return `422` trying to edit with invalid ObjectId', async () => {
+    expect.assertions(3);
+
+    const response = await request()
+      .put('/orders')
+      .send({
+        id: chance.hash(),
+        document: chance.cpf(),
+        price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
+        date: new Date(),
+      })
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(422);
+    expect(response.body.order).not.toBeDefined();
+    expect(response.body.updated).not.toBeDefined();
+  });
+
+  test('`DELETE` /orders should return `204` and will be able to delete an order', async () => {
+    expect.assertions(1);
+
+    const response = await request()
+      .delete(`/orders/${orderDefault.id}`)
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(204);
+  });
+
+  test('`DELETE` /orders should return `405` trying to delete an special order', async () => {
+    expect.assertions(1);
+
+    const response = await request()
+      .delete(`/orders/${orderSpecial.id}`)
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(405);
+  });
+
+  test('`DELETE` /orders should return `422` trying to delete an invalid ObjectId', async () => {
+    expect.assertions(1);
+
+    const response = await request()
+      .delete(`/orders/${chance.hash()}`)
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(422);
   });
 });

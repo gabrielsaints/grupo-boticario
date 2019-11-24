@@ -33,4 +33,14 @@ const put = Joi.object().keys({
   date: Joi.date(),
 });
 
-export { post, put };
+const del = Joi.object().keys({
+  id: Joi.custom((value: any, helpers: any) => {
+    if (!Validate.objectId(value)) {
+      return helpers.error('ObjectId is invalid');
+    }
+
+    return value;
+  }),
+});
+
+export { post, put, del };

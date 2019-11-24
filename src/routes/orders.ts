@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { post, put } from '../schemas/orders';
+import { post, put, del } from '../schemas/orders';
 
-import { store, update } from '../controllers/orders';
+import { store, update, drop } from '../controllers/orders';
 
 import isAuth from '../middlewares/is-auth';
 
@@ -12,5 +12,6 @@ const router = express.Router();
 
 router.post('/orders', Validate.fields('body', post), isAuth, store);
 router.put('/orders', Validate.fields('body', put), isAuth, update);
+router.delete('/orders/:id', Validate.fields('params', del), isAuth, drop);
 
 export default router;
