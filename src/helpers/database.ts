@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// mongoose.set('debug', true);
+
 abstract class Database {
   public static async connect(
     uri: string | null | undefined = process.env.MONGO_URI,
