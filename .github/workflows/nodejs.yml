@@ -29,6 +29,8 @@ jobs:
     - name: Start application tests with `npm run jest`
       run: |
         npm run jest
+      env:
+        MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
     - name: Percentage of tests coverage
       run: |
         npm run test:coverage
