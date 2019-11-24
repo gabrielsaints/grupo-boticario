@@ -88,6 +88,22 @@ describe('API Orders', () => {
     expect(response.body.orders).toBeDefined();
   });
 
+  test('`GET` /orders should return `400` with invalid data', async () => {
+    expect.assertions(2);
+
+    const response = await request()
+      .get('/orders')
+      .query({
+        test: chance.hash(),
+      })
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.orders).not.toBeDefined();
+  });
+
   test('`POST` /orders should return `201` and create an order', async () => {
     expect.assertions(4);
 
@@ -117,6 +133,26 @@ describe('API Orders', () => {
     expect(order).toBeInstanceOf(Order);
 
     await order.remove();
+  });
+
+  test('`POST` /orders should return `400` with invalid data', async () => {
+    expect.assertions(2);
+
+    const response = await request()
+      .post('/orders')
+      .query({
+        test: chance.hash(),
+      })
+      .send({
+        document: chance.cpf(),
+        price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
+      })
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.order).not.toBeDefined();
   });
 
   test('`POST` /orders should return `201` and create an order with default status', async () => {
@@ -350,5 +386,17 @@ describe('API Orders', () => {
       });
 
     expect(response.status).toBe(422);
+  });
+
+  test('`DELETE` /orders should return `422` trying to delete an inexistant order', async () => {
+    expect.assertions(1);
+
+    const response = await request()
+      .delete(`/orders/${Types.ObjectId()}`)
+      .set({
+        'X-Authorization': `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(404);
   });
 });

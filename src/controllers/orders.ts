@@ -7,6 +7,14 @@ import Order, { IOrderSerialized, IOrderDocument } from '../models/order';
 
 const all: RequestHandler = async (req, res, next) => {
   try {
+    if (
+      Object.keys(req.body).length ||
+      Object.keys(req.params).length ||
+      Object.keys(req.query).length
+    ) {
+      throw new RequestError(400, 'Bad request');
+    }
+
     const orders: IOrderDocument[] = await Order.find({});
 
     res.status(200).json({
@@ -24,6 +32,10 @@ const all: RequestHandler = async (req, res, next) => {
 const store: RequestHandler = async (req, res, next) => {
   try {
     let status: string = 'EM VALIDAÇÃO';
+
+    if (Object.keys(req.params).length || Object.keys(req.query).length) {
+      throw new RequestError(400, 'Bad request');
+    }
 
     if (req.body.document === '15350946056') {
       status = 'APROVADO';
