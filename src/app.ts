@@ -7,6 +7,7 @@ import errors from './middlewares/error';
 
 import UsersRouter from './routes/users';
 import AuthRouter from './routes/auth';
+import OrdersRouter from './routes/orders';
 
 import './config/env';
 
@@ -33,6 +34,7 @@ class App implements IApp {
   private routes(): void {
     this.server.use(UsersRouter);
     this.server.use(AuthRouter);
+    this.server.use(OrdersRouter);
   }
 
   private listeners(): void {

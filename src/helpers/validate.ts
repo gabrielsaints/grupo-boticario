@@ -1,5 +1,6 @@
 import { ObjectSchema } from '@hapi/joi';
 import { RequestHandler } from 'express';
+import { Types } from 'mongoose';
 
 import RequestError from '../helpers/request-error';
 
@@ -42,6 +43,10 @@ abstract class Validate {
         next(err);
       }
     };
+  }
+
+  public static objectId(id: string | any): boolean {
+    return Types.ObjectId.isValid(id);
   }
 }
 
