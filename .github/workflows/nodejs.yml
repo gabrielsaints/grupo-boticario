@@ -31,8 +31,12 @@ jobs:
         npm run jest
       env:
         MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
+        JWT_SECRET: "SECRET"
+        PORT: 3000
     - name: Percentage of tests coverage
       run: |
         npm run test:coverage
       env:
         MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
+        JWT_SECRET: "SECRET"
+        PORT: 3000
