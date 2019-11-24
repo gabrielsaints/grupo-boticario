@@ -1,14 +1,14 @@
 import Normalize from './utils/normalize';
 import User, { IUserDocument, isUser } from '../models/user';
-import Sale, { ISaleDocument, isSale } from '../models/sale';
+import Order, { IOrderDocument, isOrder } from '../models/order';
 
 import chance from './utils/chance';
 
 import CashbackHelper from '../helpers/cashback';
 
-describe('Sales', () => {
+describe('Orders', () => {
   let user: IUserDocument;
-  let sale: ISaleDocument;
+  let order: IOrderDocument;
 
   beforeAll(async () => {
     await Normalize.beforeAll();
@@ -23,38 +23,39 @@ describe('Sales', () => {
   });
 
   afterAll(async () => {
-    await sale.remove();
+    await order.remove();
     await user.remove();
     await Normalize.afterAll();
   });
 
-  it('`sales` should create an sale', async () => {
+  it('`orders` should create an order', async () => {
     expect.assertions(1);
 
-    sale = new Sale({
+    order = new Order({
       price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
       status: chance.string(),
+      document: chance.cpf(),
       user,
     });
 
-    await sale.save();
+    await order.save();
 
-    expect(await Sale.findOne({ _id: sale.id })).toBeInstanceOf(Sale);
+    expect(await Order.findOne({ _id: order.id })).toBeInstanceOf(Order);
   });
 
-  it('`sales` should return an valid sale', async () => {
+  it('`orders` should return an valid order', async () => {
     expect.assertions(5);
 
-    const found = await Sale.findOne({ _id: sale.id });
+    const found = await Order.findOne({ _id: order.id });
 
     if (!found || !found.user) {
-      fail('Sale is invalid');
+      fail('Order is invalid');
     }
 
     const userFound = await User.findOne({ _id: found.user });
 
-    expect(found).toBeInstanceOf(Sale);
-    expect(isSale(found)).toBe(true);
+    expect(found).toBeInstanceOf(Order);
+    expect(isOrder(found)).toBe(true);
     expect(isUser(userFound)).toBe(true);
     expect(typeof found.cashback).toMatch('string');
 
@@ -63,51 +64,52 @@ describe('Sales', () => {
     expect(typeof parseFloat(cashback)).toMatch('number');
   });
 
-  it('`sale` should update an sale', async () => {
+  it('`order` should update an order', async () => {
     expect.assertions(2);
 
-    const oldPrice = sale.price;
+    const oldPrice = order.price;
     const newPrice = chance.floating({ min: 900, max: 2000, fixed: 2 });
 
-    sale.price = newPrice;
+    order.price = newPrice;
 
-    await sale.save();
+    await order.save();
 
-    expect(sale.price === oldPrice).toBe(false);
-    expect(sale.price).toBe(newPrice.toFixed(2));
+    expect(order.price === oldPrice).toBe(false);
+    expect(order.price).toBe(newPrice.toFixed(2));
   });
 
-  it('`sale` should check if $900 returns $90 of cashback', async () => {
+  it('`order` should check if $900 returns $90 of cashback', async () => {
     expect.assertions(1);
 
     expect(CashbackHelper.calculate(900.0)).toBe(90.0);
   });
 
-  it('`sale` should check if $1300 returns $195 of cashback', async () => {
+  it('`order` should check if $1300 returns $195 of cashback', async () => {
     expect.assertions(1);
 
     expect(CashbackHelper.calculate(1300.0)).toBe(195.0);
   });
 
-  it('`sale` should check if $1600 returns $320 of cashback', async () => {
+  it('`order` should check if $1600 returns $320 of cashback', async () => {
     expect.assertions(1);
 
     expect(CashbackHelper.calculate(1600.0)).toBe(320.0);
   });
 
-  it('`sale` should remove an sale', async () => {
+  it('`order` should remove an order', async () => {
     expect.assertions(2);
 
-    const newSale = new Sale({
+    const newOrder = new Order({
       price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
       status: chance.string(),
+      document: chance.cpf(),
       user,
     });
 
-    await newSale.save();
-    expect(await Sale.findOne({ _id: newSale.id })).toBeInstanceOf(Sale);
+    await newOrder.save();
+    expect(await Order.findOne({ _id: newOrder.id })).toBeInstanceOf(Order);
 
-    await newSale.remove();
-    expect(await Sale.findOne({ _id: newSale.id })).toBe(null);
+    await newOrder.remove();
+    expect(await Order.findOne({ _id: newOrder.id })).toBe(null);
   });
 });

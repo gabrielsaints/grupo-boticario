@@ -70,7 +70,7 @@ USER_SCHEMA.methods.comparePassword = async function(password: string) {
   return EncryptionHelper.comparePassword(password, this.password);
 };
 
-USER_SCHEMA.methods.serialize = function(password: string) {
+USER_SCHEMA.methods.serialize = function() {
   let user: IUserSerialized;
 
   user = {
