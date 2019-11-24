@@ -8,6 +8,6 @@ import Validate from '../helpers/validate';
 
 const router = express.Router();
 
-router.get('/users', Validate.fields('body', post), store);
+router.post('/users', Validate.fields('body', post), store);
 
 export default router;

@@ -1,7 +1,23 @@
 import { RequestHandler } from 'express';
 
-const store: RequestHandler = (_, res) => {
-  res.send('oi');
+import User from '../models/user';
+
+const store: RequestHandler = async (req, res) => {
+  const user = new User({
+    ...req.body,
+    password: await User.encryptPassword(req.body.password),
+  });
+
+  await user.save();
+
+  res.status(201).json({
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      document: user.document,
+    },
+  });
 };
 
 export { store };
