@@ -26,11 +26,6 @@ abstract class Validate {
         const response = schema.validate(data);
 
         if (response.error) {
-          // tslint:disable-next-line: no-console
-          console.log(data);
-          // tslint:disable-next-line: no-console
-          console.log(response.error);
-
           throw new RequestError(422, response.error.message);
         }
 

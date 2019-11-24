@@ -6,6 +6,7 @@ import cors from 'cors';
 import errors from './middlewares/error';
 
 import UsersRouter from './routes/users';
+import AuthRouter from './routes/auth';
 
 import './config/env';
 
@@ -31,6 +32,7 @@ class App implements IApp {
 
   private routes(): void {
     this.server.use(UsersRouter);
+    this.server.use(AuthRouter);
   }
 
   private listeners(): void {

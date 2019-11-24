@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 import RequestError from '../helpers/request-error';
 
-import User from '../models/user';
+import User, { IUserSerialized } from '../models/user';
 
 const store: RequestHandler = async (req, res, next) => {
   try {
@@ -31,13 +31,12 @@ const store: RequestHandler = async (req, res, next) => {
 
     await user.save();
 
+    let response: IUserSerialized;
+
+    response = user.serialize();
+
     res.status(201).json({
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        document: user.document,
-      },
+      user: response,
     });
   } catch (err) {
     next(err);

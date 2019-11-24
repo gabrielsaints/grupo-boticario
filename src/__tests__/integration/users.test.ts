@@ -25,9 +25,6 @@ describe('API Users', () => {
         document: chance.cpf().replace(/[^\d]/g, ''),
       });
 
-    // tslint:disable-next-line: no-console
-    console.log(response.body);
-
     expect(response.status).toBe(201);
     expect(response.body.user).toBeDefined();
 
