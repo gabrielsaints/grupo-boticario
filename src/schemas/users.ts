@@ -15,7 +15,7 @@ const post = Joi.object().keys({
     .required(),
   password: Joi.string()
     .min(3)
-    .max(30)
+    .max(50)
     .required(),
 });
 

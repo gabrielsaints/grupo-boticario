@@ -13,7 +13,17 @@ abstract class Validate {
 
     return (req, _, next) => {
       try {
-        const response = schema.validate(schema);
+        let data = {};
+
+        if (field === 'body') {
+          data = req.body;
+        } else if (field === 'params') {
+          data = req.params;
+        } else if (field === 'query') {
+          data = req.query;
+        }
+
+        const response = schema.validate(data);
 
         if (response.error) {
           throw new RequestError(422, response.error.message);

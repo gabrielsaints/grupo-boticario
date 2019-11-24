@@ -52,7 +52,15 @@ const isUser = (user: IUserModel | any): user is IUserModel => {
   );
 };
 
-export { IUserDocument, IUserModel, isUser };
+const serializeUser = (user: IUserModel | any): user is IUserModel => {
+  const userSerialized = { ...user };
+
+  delete userSerialized.password;
+
+  return userSerialized;
+};
+
+export { IUserDocument, IUserModel, isUser, serializeUser };
 
 const USER: IUserModel = model<IUserDocument, IUserModel>('User', USER_SCHEMA);
 
