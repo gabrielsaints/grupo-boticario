@@ -86,6 +86,7 @@ Principais tecnologias utilizadas:
 ## Testes
 
 > **Em progresso:** até o momento, os testes cobrem **96.9%** da aplicação.
+> Existe também um pequeno bug nos testes que, de vez em quando, ele dá falha. Mas se rodar novamente ele passa. Irei certificar-me disso posteriormente e corrigir.
 
 Resultados do **coverage** geral:
 ![a imagem mostra os testes realizados na aplicação](https://i.imgur.com/jLNanGy.png)
