@@ -8,28 +8,21 @@ import User, { isUser, IUserDocument } from '../../models/user';
 describe('API Users', () => {
   let user: IUserDocument;
   let token: string | null;
+  const email: string = chance.email();
   const document: string = chance.cpf();
   const password: string = chance.hash();
 
   beforeAll(async () => {
     await Normalize.beforeAll();
-
     user = new User({
-      email: chance.email(),
+      email,
       password: await User.encryptPassword(password),
       name: chance.name(),
       document,
     });
 
     await user.save();
-  });
 
-  afterAll(async () => {
-    await user.remove();
-    await Normalize.afterAll();
-  });
-
-  beforeEach(async () => {
     const response = await request()
       .post('/auth')
       .send({
@@ -40,8 +33,43 @@ describe('API Users', () => {
     token = response.body.token;
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     token = null;
+
+    await user.remove();
+    await Normalize.afterAll();
+  });
+
+  test('`POST /users` should return `409` using an duplicated email', async () => {
+    expect.assertions(2);
+
+    const response = await request()
+      .post('/users')
+      .send({
+        name: chance.name(),
+        password: chance.hash(),
+        email: user.email,
+        document: chance.cpf().replace(/[^\d]/g, ''),
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body.user).toBeUndefined();
+  });
+
+  test('`POST /users` should return `409` using an duplicated document', async () => {
+    expect.assertions(2);
+
+    const response = await request()
+      .post('/users')
+      .send({
+        name: chance.name(),
+        password: chance.hash(),
+        email: chance.email(),
+        document: user.document,
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body.user).toBeUndefined();
   });
 
   test('`GET` /users/:document/cashback should return `200` with value', async () => {
@@ -99,7 +127,7 @@ describe('API Users', () => {
   });
 
   test('`POST /users` should return `201` with an object of User', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
     const response = await request()
       .post('/users')
       .send({
@@ -112,17 +140,13 @@ describe('API Users', () => {
     expect(response.status).toBe(201);
     expect(response.body.user).toBeDefined();
 
-    const userTesting = await User.findOne({
-      _id: response.body.user._id,
-    });
+    const userTesting = await User.findById(response.body.user._id);
 
     expect(userTesting).not.toBeNull();
 
     if (!userTesting) {
       fail();
     }
-
-    expect(isUser(userTesting)).toBe(true);
 
     await userTesting.remove();
   });
@@ -138,89 +162,5 @@ describe('API Users', () => {
 
     expect(response.status).toBe(422);
     expect(response.body.user).toBeUndefined();
-  });
-
-  test('`POST /users` should return `409` using an duplicated email', async () => {
-    expect.assertions(6);
-    const email = chance.email();
-    let response = await request()
-      .post('/users')
-      .send({
-        name: chance.name(),
-        password: chance.hash(),
-        email,
-        document: chance.cpf().replace(/[^\d]/g, ''),
-      });
-
-    expect(response.status).toBe(201);
-    expect(response.body.user).toBeDefined();
-
-    const userTesting = await User.findOne({
-      _id: response.body.user._id,
-    });
-
-    expect(userTesting).not.toBeNull();
-
-    if (!userTesting) {
-      fail();
-    }
-
-    expect(isUser(userTesting)).toBe(true);
-
-    response = await request()
-      .post('/users')
-      .send({
-        name: chance.name(),
-        password: chance.hash(),
-        email,
-        document: chance.cpf().replace(/[^\d]/g, ''),
-      });
-
-    expect(response.status).toBe(409);
-    expect(response.body.user).toBeUndefined();
-
-    await userTesting.remove();
-  });
-
-  test('`POST /users` should return `409` using an duplicated document', async () => {
-    expect.assertions(6);
-    const documentTesting = chance.cpf();
-    let response = await request()
-      .post('/users')
-      .send({
-        name: chance.name(),
-        password: chance.hash(),
-        email: chance.email(),
-        document: documentTesting,
-      });
-
-    expect(response.status).toBe(201);
-    expect(response.body.user).toBeDefined();
-
-    const userTesting = await User.findOne({
-      _id: response.body.user._id,
-    });
-
-    expect(userTesting).not.toBeNull();
-
-    if (!userTesting) {
-      fail();
-    }
-
-    expect(isUser(userTesting)).toBe(true);
-
-    response = await request()
-      .post('/users')
-      .send({
-        name: chance.name(),
-        password: chance.hash(),
-        email: chance.email(),
-        document: documentTesting,
-      });
-
-    expect(response.status).toBe(409);
-    expect(response.body.user).toBeUndefined();
-
-    await userTesting.remove();
   });
 });

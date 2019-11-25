@@ -66,6 +66,11 @@ const USER_SCHEMA = new Schema({
   },
 });
 
+USER_SCHEMA.pre<IUserDocument>('save', function(next) {
+  this.document = this.document.replace(/[^\d]/g, '');
+  next();
+});
+
 USER_SCHEMA.methods.comparePassword = async function(password: string) {
   return EncryptionHelper.comparePassword(password, this.password);
 };
