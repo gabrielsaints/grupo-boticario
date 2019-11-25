@@ -51,16 +51,7 @@ describe('API Orders', () => {
     });
 
     await orderSpecial.save();
-  });
 
-  afterAll(async () => {
-    await orderSpecial.remove();
-    await orderDefault.remove();
-    await user.remove();
-    await Normalize.afterAll();
-  });
-
-  beforeEach(async () => {
     const response = await request()
       .post('/auth')
       .send({
@@ -71,8 +62,13 @@ describe('API Orders', () => {
     token = response.body.token;
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     token = null;
+
+    await orderSpecial.remove();
+    await orderDefault.remove();
+    await user.remove();
+    await Normalize.afterAll();
   });
 
   test('`GET` /orders should return `200` with array of orders', async () => {
