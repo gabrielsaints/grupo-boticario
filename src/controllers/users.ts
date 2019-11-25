@@ -73,7 +73,6 @@ const cashback: RequestHandler = async (req: any, res, next) => {
         throw new RequestError(400, 'Missing document parameter');
       }
     } catch (error) {
-      console.log(error.response);
       throw error;
     }
 
