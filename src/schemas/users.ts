@@ -18,4 +18,12 @@ const post = Joi.object().keys({
     .required(),
 });
 
-export { post };
+const getCashback = Joi.object().keys({
+  document: Joi.string()
+    .trim()
+    .replace(/[^\d]/g, '')
+    .regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/)
+    .required(),
+});
+
+export { post, getCashback };

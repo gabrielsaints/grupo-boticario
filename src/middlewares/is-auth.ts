@@ -32,6 +32,8 @@ const decodifyToken = (token: string, secret?: string): object | string =>
 const isAuth: RequestHandler = async (req: any, _, next) => {
   try {
     const auth = req.get('X-Authorization');
+    const dev = !!req.get('X-Dev');
+    const testing = !!req.get('X-Testing');
     if (!auth) {
       throw new RequestError(401, 'Not authenticated');
     }
@@ -52,6 +54,8 @@ const isAuth: RequestHandler = async (req: any, _, next) => {
 
     try {
       req.user = await getTokenUser(data);
+      req.dev = dev;
+      req.testing = testing;
     } catch (err) {
       throw new RequestError(401, err.message);
     }
