@@ -2,6 +2,12 @@ import { RequestHandler } from 'express';
 
 import RequestError from '../helpers/request-error';
 
+import axios, { AxiosInstance } from 'axios';
+
+const api: AxiosInstance = axios.create({
+  baseURL: process.env.CASHBACK_API,
+});
+
 import User, { IUserSerialized } from '../models/user';
 
 const store: RequestHandler = async (req, res, next) => {
@@ -43,4 +49,39 @@ const store: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { store };
+const cashback: RequestHandler = async (req: any, res, next) => {
+  try {
+    let body: any;
+
+    try {
+      if (req.dev) {
+        throw new Error('Method not allowed');
+      }
+
+      const response = await api.get('/cashback', {
+        params: {
+          cpf: req.testing ? undefined : req.params.document,
+        },
+        headers: {
+          token: process.env.CASHBACK_API_TOKEN,
+        },
+      });
+
+      body = response.data.body;
+
+      if (!body.credit) {
+        throw new RequestError(400, 'Missing document parameter');
+      }
+    } catch (error) {
+      throw error;
+    }
+
+    res.status(200).json({
+      cashback: body.credit,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { store, cashback };

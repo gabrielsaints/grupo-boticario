@@ -332,26 +332,6 @@ describe('API Orders', () => {
     expect(response.body.updated).not.toBeDefined();
   });
 
-  test('`PUT` /orders should return `422` trying to edit with invalid ObjectId', async () => {
-    expect.assertions(3);
-
-    const response = await request()
-      .put('/orders')
-      .send({
-        id: chance.hash(),
-        document: chance.cpf(),
-        price: chance.floating({ min: 900, max: 2000, fixed: 2 }),
-        date: new Date(),
-      })
-      .set({
-        'X-Authorization': `Bearer ${token}`,
-      });
-
-    expect(response.status).toBe(422);
-    expect(response.body.order).not.toBeDefined();
-    expect(response.body.updated).not.toBeDefined();
-  });
-
   test('`DELETE` /orders should return `204` and will be able to delete an order', async () => {
     expect.assertions(1);
 

@@ -32,6 +32,8 @@ jobs:
       env:
         MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
         JWT_SECRET: "SECRET"
+        CASHBACK_API: "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1"
+        CASHBACK_API_TOKEN: "ZXPURQOARHiMc6Y0flhRC1LVlZQVFRnm"
         PORT: 3000
     - name: Percentage of tests coverage
       run: |
@@ -39,4 +41,6 @@ jobs:
       env:
         MONGO_URI: "mongodb://127.0.0.1:27017/grupo_boticario"
         JWT_SECRET: "SECRET"
+        CASHBACK_API: "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1"
+        CASHBACK_API_TOKEN: "ZXPURQOARHiMc6Y0flhRC1LVlZQVFRnm"
         PORT: 3000

@@ -8,14 +8,7 @@ const notFound: RequestHandler = (req, res, next) => {
 
 const exception: ErrorRequestHandler = (err, req, res, next) => {
   const status = isRequestError(err) ? err.status : 500;
-  let message: string = err.message;
-  if (status === 500) {
-    // tslint:disable-next-line: no-console
-    console.error(err);
-    if (process.env.NODE_ENV === 'production') {
-      message = 'Internal server error';
-    }
-  }
+  const message: string = err.message;
   res.status(status).json({ error: { message } });
 };
 
