@@ -22,14 +22,11 @@ const put = Joi.object().keys({
 
     return value;
   }),
-  price: Joi.number()
-    .min(0.1)
-    .required(),
+  price: Joi.number().min(0.1),
   document: Joi.string()
     .trim()
     .replace(/[^\d]/g, '')
-    .regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/)
-    .required(),
+    .regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
   date: Joi.date(),
 });
 
