@@ -4,10 +4,6 @@ import RequestError from '../helpers/request-error';
 
 import axios, { AxiosInstance } from 'axios';
 
-const api: AxiosInstance = axios.create({
-  baseURL: process.env.CASHBACK_API,
-});
-
 import User, { IUserSerialized } from '../models/user';
 
 const store: RequestHandler = async (req, res, next) => {
@@ -53,6 +49,10 @@ const cashback: RequestHandler = async (req: any, res, next) => {
   try {
     let body: any;
 
+    const api: AxiosInstance = axios.create({
+      baseURL: process.env.CASHBACK_API,
+    });
+
     try {
       if (req.dev) {
         throw new Error('Method not allowed');
@@ -73,6 +73,7 @@ const cashback: RequestHandler = async (req: any, res, next) => {
         throw new RequestError(400, 'Missing document parameter');
       }
     } catch (error) {
+      console.log(error.response);
       throw error;
     }
 

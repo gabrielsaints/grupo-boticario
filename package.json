@@ -2,6 +2,8 @@
   "name": "grupo-boticario",
   "author": "Gabriel Santos <gabr1el_santos@hotmail.com>",
   "scripts": {
+    "predev": "yarn build",
+    "prestart": "yarn build",
     "start": "node_modules/.bin/nodemon build/server.js",
     "jest": "node_modules/.bin/jest",
     "build": "node_modules/.bin/tsc",
